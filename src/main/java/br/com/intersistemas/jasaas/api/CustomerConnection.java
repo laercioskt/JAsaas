@@ -5,15 +5,15 @@ import br.com.intersistemas.jasaas.entity.meta.MetaCustomer;
 import br.com.intersistemas.jasaas.exception.ConnectionException;
 import br.com.intersistemas.jasaas.util.HttpParamsUtil;
 import br.com.intersistemas.jasaas.util.JsonUtil;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import br.com.intersistemas.jasaas.adapter.AdapterConnection;
 import br.com.intersistemas.jasaas.entity.filter.CustomerFilter;
-import br.com.intersistemas.jasaas.entity.meta.ContentCustomer;
 import br.com.intersistemas.jasaas.entity.meta.DeletedEntityReturn;
 import br.com.intersistemas.jasaas.entity.meta.MetaError;
+
+import static java.util.Arrays.asList;
 
 /**
  *
@@ -64,18 +64,11 @@ public class CustomerConnection extends AbstractConnection {
             setLimit(meta.getLimit());
             setOffset(meta.getOffset());
 
-            ContentCustomer[] contentList = meta.getData();
-            List<Customer> customers = new ArrayList<>();
-
-            for (ContentCustomer content : contentList) {
-                customers.add(content.getCustomer());
-            }
-            return customers;
+            return asList(meta.getData());
         } catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException ex) {
             Logger.getLogger(CustomerConnection.class.getName()).log(Level.SEVERE, null, ex);
             throw new ConnectionException(500, ex.getMessage());
         }
-        //return null;
     }
 
     public Customer getById(String id) throws ConnectionException {
@@ -91,11 +84,11 @@ public class CustomerConnection extends AbstractConnection {
         setLimit(meta.getLimit());
         setOffset(meta.getOffset());
 
-        ContentCustomer[] contentList = meta.getData();
+        Customer[] contentList = meta.getData();
         if (contentList.length == 0) {
             return null;
         }
-        return contentList[0].getCustomer();
+        return contentList[0];
     }
 
     public Customer createCustomer(Customer customer) throws ConnectionException {
