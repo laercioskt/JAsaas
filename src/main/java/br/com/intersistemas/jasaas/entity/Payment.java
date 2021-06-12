@@ -74,6 +74,9 @@ public final class Payment {
     private String invoiceNumber;
     @Expose(serialize = false)
     private Boolean deleted;
+    @Expose(serialize = false)
+    private Boolean postalService;
+
 
     @Expose
     private CreditCard creditCard;
@@ -425,6 +428,14 @@ public final class Payment {
 
     public void setSplit(List<Split> split) {
         this.split = split;
+    }
+
+    public Boolean getPostalService() {
+        return postalService;
+    }
+
+    public void setPostalService(Boolean postalService) {
+        this.postalService = postalService;
     }
 
     @Override
